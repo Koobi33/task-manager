@@ -57,7 +57,7 @@
                         <label for="taskDate"></label> <input type="datetime-local" id="taskDate" name="taskDate">
                         </div>
                         </div>
-                        <button type="submit" value="Создать" formmethod="post" class="btn btn-primary" onclick="createTask()">Создать</button>
+                        <button type="submit" value="Создать" formmethod="post" class="btn btn-primary" onclick="createTask();">Создать</button>
                     </form>
 <!--                    <button type="submit" value="Создать" class="btn btn-primary" onclick="f()">Создать</button>-->
 
@@ -69,7 +69,9 @@
 
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                     <ul id="list">
+
                     </ul>
+                    <button type="button" class="btn btn-primary" onclick="clrList()">Очистить</button>
                 </div>
 
 <!--                Личные задачи-->
