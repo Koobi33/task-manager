@@ -27,8 +27,16 @@ body{
      margin-left: 0px;
 }
 
-.big-button{
+.big-button {
     font-size: 1.5em;
     margin-top: 15px;
     margin-bottom: 15px;
+}
+
+.completed {
+    color: gray;
+    text-decoration: line-through;
+}
+.inProgress {
+    color: black;
 }
