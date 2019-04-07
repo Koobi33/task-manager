@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body onload="buildList()">
+<body onload="buildList(); buildPersonList(); buildWorkList()">
 
 <nav class="navbar navbar-light bg-light border-bottom-2 border border-secondary">
     <a class="navbar-brand">Very beautiful task manager</a>
@@ -29,8 +29,8 @@
     <div class="row">
         <div class="col-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
-                <a class="nav-link" id="v-pills-create-tab" data-toggle="pill" href="#v-pills-create" role="tab"aria-controls="v-pills-create" aria-selected="false">Создать задачу</a>
-                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Все задачи</a>
+                <a class="nav-link"  id="v-pills-create-tab" data-toggle="pill" href="#v-pills-create" role="tab"aria-controls="v-pills-create" aria-selected="false">Создать задачу</a>
+                <a class="nav-link active"  id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Все задачи</a>
                 <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Личные</a>
                 <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Рабочие</a>
             </div>
@@ -68,22 +68,22 @@
 <!--                Список всех задач-->
 
                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                    <ul id="list">
-
-                    </ul>
+                    <ul id="list"></ul>
                     <button type="button" class="btn btn-primary" onclick="clrList()">Очистить</button>
                 </div>
 
 <!--                Личные задачи-->
 
                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-
+                    <ul id="personList"></ul>
 
                 </div>
 
 <!--                Рабочие-->
 
-                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">mess</div>
+                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    <ul id="workList"></ul>
+                </div>
             </div>
         </div>
     </div>
