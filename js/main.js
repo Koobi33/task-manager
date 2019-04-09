@@ -32,6 +32,7 @@ function complete(elem) {
 
 
 function buildList() {
+
     if (localStorage.length > 0) {
         for (let j = 0; j < localStorage.length; j++) {
             let key = localStorage.key(j);
@@ -39,15 +40,14 @@ function buildList() {
             let localValueJSON = JSON.parse(localValue);
             let localValueName = localValueJSON.taskName;
             let localValueType = localValueJSON.taskType;
-            let localValueDate = localValueJSON.taskDate;
+            let localValueDate = new Date(localValueJSON.taskDate);
+            localValueDate = localValueDate.toLocaleString();
             let localValueId = localValueJSON.taskId;
             let currentDate = Math.round(Date.now() / 60);
             let localValueDateNorm = Date.parse(localValueJSON.taskDate) / 60;
             let diff = currentDate - localValueDateNorm;
             diff = Math.round(diff / 60);
             let newLi = localValueName + "\n" + localValueType + "\n" + localValueDate + "\n";
-            // document.getElementById("list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>");
-
             if (localValueJSON.taskType === "Тип задачи: Личные задачи") {
                 $("#personList").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>")
                 if (localValueDateNorm < currentDate)
