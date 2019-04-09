@@ -27,6 +27,15 @@ body{
      margin-left: 0px;
 }
 
+.red {
+    background-color: pink;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+
 .big-button {
     font-size: 1.5em;
     margin-top: 15px;

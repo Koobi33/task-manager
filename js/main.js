@@ -15,7 +15,7 @@ function createTask() {
     var newTask = {
         taskName: "Задача: " + document.getElementById('taskName').value,
         taskType: "Тип задачи: " + document.getElementById('taskType').value,
-        taskDate: "Deadline: " + document.getElementById('taskDate').value,
+        taskDate: "" + document.getElementById('taskDate').value,
         taskId: "" +  i
     };
     var sNewTask = JSON.stringify(newTask);
@@ -30,6 +30,7 @@ function complete(elem) {
     elem.className = (elem.className === "inProgress") ? "completed" : "inProgress";
 }
 
+
 function buildList() {
         if (localStorage.length > 0) {
             for (let j = 0; j < localStorage.length; j++) {
@@ -40,10 +41,22 @@ function buildList() {
                 let localValueType = localValueJSON.taskType;
                 let localValueDate = localValueJSON.taskDate;
                 let localValueId = localValueJSON.taskId;
+                let currentDate = Math.round(Date.now() / 60);
+                let localValueDateNorm = Date.parse(localValueJSON.taskDate) / 60;
+                let diff = currentDate - localValueDateNorm;
+                diff = Math.round(diff / 60);
+               // alert(" разница " + diff);
+              //  alert("текущая дата " + currentDate);
+
                let newLi = localValueName + "\n" + localValueType + "\n" + localValueDate + "\n" ;
-              // document.getElementById("list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>");
-               $("#list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>")
-            }
+                   // document.getElementById("list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>");
+                $("#list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>")
+                if (localValueDateNorm < currentDate)
+                    document.getElementById(localValueId).className += " red";
+                if (diff < 0 && diff > -86400)
+                    document.getElementById(localValueId).className += " yellow";
+               }
+
         }
    }
 
