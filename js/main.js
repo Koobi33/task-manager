@@ -45,7 +45,7 @@ function buildList() {
                 let localValueDateNorm = Date.parse(localValueJSON.taskDate) / 60;
                 let diff = currentDate - localValueDateNorm;
                 diff = Math.round(diff / 60);
-               // alert(" разница " + diff);
+               alert(" разница " + diff);
               //  alert("текущая дата " + currentDate);
 
                let newLi = localValueName + "\n" + localValueType + "\n" + localValueDate + "\n" ;
@@ -53,7 +53,7 @@ function buildList() {
                 $("#list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>")
                 if (localValueDateNorm < currentDate)
                     document.getElementById(localValueId).className += " red";
-                if (diff < 0 && diff > -86400)
+                if (diff < 0 && diff > -24000)
                     document.getElementById(localValueId).className += " yellow";
                }
 
