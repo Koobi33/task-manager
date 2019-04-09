@@ -32,68 +32,42 @@ function complete(elem) {
 
 
 function buildList() {
-        if (localStorage.length > 0) {
-            for (let j = 0; j < localStorage.length; j++) {
-                let key = localStorage.key(j);
-                let localValue = localStorage.getItem(key);
-                let localValueJSON = JSON.parse(localValue);
-                let localValueName = localValueJSON.taskName;
-                let localValueType = localValueJSON.taskType;
-                let localValueDate = localValueJSON.taskDate;
-                let localValueId = localValueJSON.taskId;
-                let currentDate = Math.round(Date.now() / 60);
-                let localValueDateNorm = Date.parse(localValueJSON.taskDate) / 60;
-                let diff = currentDate - localValueDateNorm;
-                diff = Math.round(diff / 60);
-               alert(" разница " + diff);
-              //  alert("текущая дата " + currentDate);
+    if (localStorage.length > 0) {
+        for (let j = 0; j < localStorage.length; j++) {
+            let key = localStorage.key(j);
+            let localValue = localStorage.getItem(key);
+            let localValueJSON = JSON.parse(localValue);
+            let localValueName = localValueJSON.taskName;
+            let localValueType = localValueJSON.taskType;
+            let localValueDate = localValueJSON.taskDate;
+            let localValueId = localValueJSON.taskId;
+            let currentDate = Math.round(Date.now() / 60);
+            let localValueDateNorm = Date.parse(localValueJSON.taskDate) / 60;
+            let diff = currentDate - localValueDateNorm;
+            diff = Math.round(diff / 60);
+            let newLi = localValueName + "\n" + localValueType + "\n" + localValueDate + "\n";
+            // document.getElementById("list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>");
 
-               let newLi = localValueName + "\n" + localValueType + "\n" + localValueDate + "\n" ;
-                   // document.getElementById("list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>");
-                $("#list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>")
+            if (localValueJSON.taskType === "Тип задачи: Личные задачи") {
+                $("#personList").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>")
                 if (localValueDateNorm < currentDate)
                     document.getElementById(localValueId).className += " red";
                 if (diff < 0 && diff > -24000)
                     document.getElementById(localValueId).className += " yellow";
-               }
-
-        }
-   }
-
-function buildPersonList() {
-    if (localStorage.length > 0) {
-        for (let j = 0; j < localStorage.length; j++) {
-            let key = localStorage.key(j);
-            let localValue = localStorage.getItem(key);
-            let localValueJSON = JSON.parse(localValue);
-            if (localValueJSON.taskType === "Тип задачи: Личные задачи") {
-                let localValueName = localValueJSON.taskName;
-                let localValueType = localValueJSON.taskType;
-                let localValueDate = localValueJSON.taskDate;
-                let localValueId = localValueJSON.taskId;
-                let newLi = localValueName + "\n" + localValueType + "\n" + localValueDate + "\n";
-                // document.getElementById("list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>");
-                $("#personList").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>")
             }
-        }
-    }
-}
-
-function buildWorkList() {
-    if (localStorage.length > 0) {
-        for (let j = 0; j < localStorage.length; j++) {
-            let key = localStorage.key(j);
-            let localValue = localStorage.getItem(key);
-            let localValueJSON = JSON.parse(localValue);
             if (localValueJSON.taskType === "Тип задачи: Рабочие задачи") {
-                let localValueName = localValueJSON.taskName;
-                let localValueType = localValueJSON.taskType;
-                let localValueDate = localValueJSON.taskDate;
-                let localValueId = localValueJSON.taskId;
-                let newLi = localValueName + "\n" + localValueType + "\n" + localValueDate + "\n";
-                // document.getElementById("list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>");
                 $("#workList").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>")
+                if (localValueDateNorm < currentDate) {
+                    document.getElementById(localValueId).className += " red";
+                }
+                if (diff < 0 && diff > -24000)
+                    document.getElementById(localValueId).className += " yellow";
             }
+            $("#list").append("<li class='inProgress' " + "id='" + localValueId + "' onclick='complete(this)'><span onclick='deleteLi(this)'>X</span> " + newLi + "</li>")
+            if (localValueDateNorm < currentDate)
+                document.getElementById(localValueId).className += " red";
+            if (diff < 0 && diff > -24000)
+                document.getElementById(localValueId).className += " yellow";
         }
     }
 }
