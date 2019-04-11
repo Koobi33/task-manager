@@ -47,5 +47,10 @@ body{
     text-decoration: line-through;
 }
 .inProgress {
-    color: black;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
