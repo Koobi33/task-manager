@@ -20,32 +20,39 @@ function createTask() {
         taskIsComplete: false,
     };
     var sNewTask = JSON.stringify(newTask);
-    localStorage.setItem("newTask" + i, sNewTask);
+    localStorage.setItem("" + newTask.taskName, sNewTask);
 }
 
 
 function deleteLi(elem) {
     elem.parentElement.remove();
-    localStorage.removeItem("newTask" + elem.parentElement.id)
+    localStorage.removeItem("" + elem.parentElement.id)
 }
 
 function complete(elem) {
     if (elem.className === "inProgress") {
         elem.className = "completed";
-        let isComplete = JSON.parse(localStorage.getItem("newTask" + elem.parentElement.id));
+        let isComplete = JSON.parse(localStorage.getItem("" + elem.parentElement.id));
         isComplete.taskIsComplete = true;
         let strIsComplete = JSON.stringify(isComplete);
-        localStorage.setItem("newTask" + elem.parentElement.id, strIsComplete);
+        localStorage.setItem("" + elem.parentElement.id, strIsComplete);
     } else if (elem.className === "completed") {
         elem.className = "inProgress";
-        let isComplete = JSON.parse(localStorage.getItem("newTask" + elem.parentElement.id));
+        let isComplete = JSON.parse(localStorage.getItem("" + elem.parentElement.id));
         isComplete.taskIsComplete = false;
         let strIsComplete = JSON.stringify(isComplete);
-        localStorage.setItem("newTask" + elem.parentElement.id, strIsComplete);
+        localStorage.setItem("" + elem.parentElement.id, strIsComplete);
     }
 }
 
 function refactorTask(elemID) {
+    for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+        let elem =  localStorage.getItem( localStorage.key( i ));
+       let elemStr = JSON.parse(elem);
+        if (elemStr.taskId === elemID){
+            var refName = elemStr.taskName;
+        }
+    }
     var refactored = {
         taskName: "" + document.getElementById('taskNameRef').value,
         taskType:  "Тип Задачи: " + document.getElementById('taskTypeRef').value,
@@ -54,13 +61,14 @@ function refactorTask(elemID) {
         taskIsComplete: false,
     };
     var strRefactored = JSON.stringify(refactored);
-    localStorage.setItem("newTask" + elemID, strRefactored);
+    localStorage.removeItem("" + refName);
+    localStorage.setItem("" + refactored.taskName, strRefactored);
     location.reload();
 }
 
 function refactorLi(elem) {
 
-    var elementStorage = JSON.parse(localStorage.getItem("newTask" + elem.parentElement.id));
+    var elementStorage = JSON.parse(localStorage.getItem("" + elem.parentElement.id));
     var div = document.createElement("div");
     div.className = "refactor";
     div.innerHTML = "<h1>Редактирование элемента " + elementStorage.taskName + "</h1>" + "<form><div class=\"form-row\">\n" +
@@ -86,7 +94,7 @@ function refactorLi(elem) {
         "                        <label for=\"taskDate\"></label> <input type=\"datetime-local\" value=\"" + elementStorage.taskDate + "\" id=\"taskDateRef\" name=\"taskDate\" min=\"2019-04-01T00:00\" max=\"2019-12-31T23:59\">\n" +
         "                        </div>\n" +
         "                        </div>\n" +
-        "                        <button type=\"submit\" value=\"Создать\" formmethod=\"post\" class=\"btn btn-primary\" onclick=\"refactorTask(" + elementStorage.taskId + ");\">Изменить</button></form>";
+        "                        <button type=\"submit\" value=\"Создать\" formmethod=\"post\" class=\"btn btn-primary\" onclick=\"refactorTask("+ elementStorage.taskId +");\">Изменить</button></form>";
     elem.parentElement.parentElement.appendChild(div);
 }
 
@@ -98,7 +106,6 @@ function buildList() {
             let localValue = localStorage.getItem(key);
             let localValueJSON = JSON.parse(localValue);
             let localValueDate = new Date(localValueJSON.taskDate);
-            localValueDate = localValueDate.toLocaleString();
             let currentDate = Math.round(Date.now() / 60);
             let localValueDateNorm = Date.parse(localValueJSON.taskDate) / 60;
             let diff = currentDate - localValueDateNorm;
@@ -106,30 +113,39 @@ function buildList() {
 
             let newLi = localValueJSON.taskName + "\n" + localValueJSON.taskType + "\n" + localValueDate.toLocaleString() + "\n";
             if (localValueJSON.taskType === "Тип Задачи: Личные задачи") {
-                $("#personList").append("<li class='inProgress' " + "id='" + localValueJSON.taskId + "'><span onclick='deleteLi(this)'>X</span> <p class='inProgress' onclick='complete(this)'>" + newLi + "</p><span onclick='refactorLi(this)'>Редактировать</span> </li>");
+                let li = document.createElement('li');
+                li.id = localValueJSON.taskName;
+                li.innerHTML =  "<span onclick='deleteLi(this)'>X</span> <p class='inProgress' onclick='complete(this)'>" + newLi + "</p><span onclick='refactorLi(this)'>Редактировать</span>";
+                document.getElementById("personList").appendChild(li);
                 if (localValueJSON.taskIsComplete === true)
-                    document.getElementById(localValueJSON.taskId).firstElementChild.nextElementSibling.className = "completed";
+                    document.getElementById(localValueJSON.taskName).firstElementChild.nextElementSibling.className = "completed";
                 if (localValueDateNorm < currentDate)
-                    document.getElementById(localValueJSON.taskId).className += " red";
+                    document.getElementById(localValueJSON.taskName).className += " red";
                 if (diff < 0 && diff > -24000)
-                    document.getElementById(localValueJSON.taskId).className += " yellow";
+                    document.getElementById(localValueJSON.taskName).className += " yellow";
             }
             if (localValueJSON.taskType === "Тип Задачи: Рабочие задачи") {
-                $("#workList").append("<li class='inProgress' " + "id='" + localValueJSON.taskId + "'><span onclick='deleteLi(this)'>X</span> <p class='inProgress' onclick='complete(this)'>" + newLi + "</p><span onclick='refactorLi(this)'>Редактировать</span> </li>");
+                let li = document.createElement('li');
+                li.id = localValueJSON.taskName;
+                li.innerHTML =  "<span onclick='deleteLi(this)'>X</span> <p class='inProgress' onclick='complete(this)'>" + newLi + "</p><span onclick='refactorLi(this)'>Редактировать</span>";
+                document.getElementById("workList").appendChild(li);
                 if (localValueJSON.taskIsComplete === true)
-                    document.getElementById(localValueJSON.taskId).firstElementChild.nextElementSibling.className = "completed";
+                    document.getElementById(localValueJSON.taskName).firstElementChild.nextElementSibling.className = "completed";
                 if (localValueDateNorm < currentDate)
-                    document.getElementById(localValueJSON.taskId).className += " red";
+                    document.getElementById(localValueJSON.taskName).className += " red";
                 if (diff < 0 && diff > -24000)
-                    document.getElementById(localValueJSON.taskId).className += " yellow";
+                    document.getElementById(localValueJSON.taskName).className += " yellow";
             }
-            $("#list").append("<li class='inProgress' " + "id='" + localValueJSON.taskId + "'><span onclick='deleteLi(this)'>X</span> <p class='inProgress' onclick='complete(this)'>" + newLi + "</p><span onclick='refactorLi(this)'>Редактировать</span> </li>");
+            let li = document.createElement('li');
+            li.id = localValueJSON.taskName;
+            li.innerHTML =  "<span onclick='deleteLi(this)'>X</span> <p class='inProgress' onclick='complete(this)'>" + newLi + "</p><span onclick='refactorLi(this)'>Редактировать</span>";
+            document.getElementById("list").appendChild(li);
             if (localValueJSON.taskIsComplete === true)
-                document.getElementById(localValueJSON.taskId).firstElementChild.nextElementSibling.className = "completed";
+                document.getElementById(localValueJSON.taskName).firstElementChild.nextElementSibling.className = "completed";
             if (localValueDateNorm < currentDate)
-                document.getElementById(localValueJSON.taskId).className += " red";
+                document.getElementById(localValueJSON.taskName).className += " red";
             if (diff < 0 && diff > -24000)
-                document.getElementById(localValueJSON.taskId).className += " yellow";
+                document.getElementById(localValueJSON.taskName).className += " yellow";
         }
     }
 }
