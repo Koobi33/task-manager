@@ -42,6 +42,7 @@
 // Изменить элемент
 
         set: function (elemID) {
+            console.log(elemID)
             if (document.querySelector('#taskNameRef').value !== "") {
                 var refactored = {
                     taskName: "" + document.querySelector('#taskNameRef').value,
@@ -173,7 +174,7 @@
 
         refactorLi: function () {
 
-            var elementStorage = JSON.parse(localStorage.getItem("" + this.parentElement.id));
+            var elementStorage = JSON.parse(localStorage.getItem("" + this.parentElement.className));
             var refh1 = document.querySelector("#refactorh1").innerHTML += "" + elementStorage.taskName;
             var refTaskName = document.querySelector("#taskNameRef").value = elementStorage.taskName;
             var refTaskDate = document.querySelector("#taskDateRef").value = elementStorage.taskDate;
