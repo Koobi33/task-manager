@@ -5,9 +5,8 @@ body{
 
 
 img {
-    margin-left: 20px;
-    width:20px;
-    height:20px;
+    width:50px;
+    height:50px;
 }
 .navbar-brand{
     margin-right: auto;
@@ -44,11 +43,11 @@ a {
      margin-left: 0px;
 }
 
-.red {
+#red {
     background-color: pink;
 }
 
-.yellow {
+#yellow {
     background-color: yellow;
 }
 
@@ -63,13 +62,19 @@ a {
     color: gray;
     text-decoration: line-through;
 }
-.inProgress {
+.inProgress, .completed {
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 li {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: space-around;
     background-color: white;
 }
 

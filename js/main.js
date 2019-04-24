@@ -32,9 +32,10 @@
         // Удалить элемент
 
         del: function () {
-            if (confirm("Вы действительно хотите удалить задачу " + this.id)) {
-                this.parentElement.remove();
-                localStorage.removeItem("" + this.parentElement.id)
+            if (confirm("Вы действительно хотите удалить задачу " + this.parentElement.className)) {
+                let strDel = "." + this.parentElement.className;
+                let delLi = document.querySelectorAll(strDel).forEach(e => e.parentNode.removeChild(e));
+                localStorage.removeItem("" + this.parentElement.className)
             }
         },
 
@@ -62,16 +63,16 @@
         complete: function () {
             if (this.className === "inProgress") {
                 this.className = "completed";
-                let isComplete = JSON.parse(localStorage.getItem("" + this.parentElement.id));
+                let isComplete = JSON.parse(localStorage.getItem("" + this.parentElement.className));
                 isComplete.taskIsComplete = true;
                 let strIsComplete = JSON.stringify(isComplete);
-                localStorage.setItem("" + this.parentElement.id, strIsComplete);
+                localStorage.setItem("" + this.parentElement.className, strIsComplete);
             } else if (this.className === "completed") {
                 this.className = "inProgress";
-                let isComplete = JSON.parse(localStorage.getItem("" + this.parentElement.id));
+                let isComplete = JSON.parse(localStorage.getItem("" + this.parentElement.className));
                 isComplete.taskIsComplete = false;
                 let strIsComplete = JSON.stringify(isComplete);
-                localStorage.setItem("" + this.parentElement.id, strIsComplete);
+                localStorage.setItem("" + this.parentElement.className, strIsComplete);
             }
         },
 
@@ -83,47 +84,78 @@
                     let key = localStorage.key(j);
                     let localValue = localStorage.getItem(key);
                     let localValueJSON = JSON.parse(localValue);
+
+                    // Определяем текущее время и дедлайн
+
                     let localValueDate = new Date(localValueJSON.taskDate);
                     let currentDate = Math.round(Date.now() / 60);
                     let localValueDateNorm = Date.parse(localValueJSON.taskDate) / 60;
                     let diff = currentDate - localValueDateNorm;
                     diff = Math.round(diff / 60);
 
-                    let newLi = localValueJSON.taskName + "\n" + localValueJSON.taskType + "\n" + localValueDate.toLocaleString() + "\n";
-                    if (localValueJSON.taskType === "Тип Задачи: Личные задачи") {
-                        let li = document.createElement('li');
-                        li.id = localValueJSON.taskName;
-                        li.innerHTML = "<span class='delone'><img src=\"trash-alt-regular.svg\"></span> <p class='inProgress'>" + newLi + "</p><span class='refactor'>Редактировать</span>";
-                        document.querySelector("#personList").appendChild(li);
-                        if (localValueJSON.taskIsComplete === true)
-                            document.getElementById(localValueJSON.taskName).firstElementChild.nextElementSibling.className = "completed";
-                        if (localValueDateNorm < currentDate)
-                            document.getElementById(localValueJSON.taskName).className += " red";
-                        if (diff < 0 && diff > -24000)
-                            document.getElementById(localValueJSON.taskName).className += " yellow";
-                    }
-                    if (localValueJSON.taskType === "Тип Задачи: Рабочие задачи") {
-                        let li = document.createElement('li');
-                        li.id = localValueJSON.taskName;
-                        li.innerHTML = "<span class='delone'><img src=\"trash-alt-regular.svg\"></span> <p class='inProgress' >" + newLi + "</p><span class='refactor'>Редактировать</span>";
-                        document.getElementById("workList").appendChild(li);
-                        if (localValueJSON.taskIsComplete === true)
-                            document.getElementById(localValueJSON.taskName).firstElementChild.nextElementSibling.className = "completed";
-                        if (localValueDateNorm < currentDate)
-                            document.getElementById(localValueJSON.taskName).className += " red";
-                        if (diff < 0 && diff > -24000)
-                            document.getElementById(localValueJSON.taskName).className += " yellow";
-                    }
-                    let li = document.createElement('li');
-                    li.id = localValueJSON.taskName;
-                    li.innerHTML = "<span class='delone'><img src=\"trash-alt-regular.svg\"></span><p class='inProgress'>" + newLi + "</p><span class='refactor'>Редактировать</span>";
-                    document.getElementById("list").appendChild(li);
-                    if (localValueJSON.taskIsComplete === true)
-                        document.getElementById(localValueJSON.taskName).firstElementChild.nextElementSibling.className = "completed";
+                //???    let newLi = localValueJSON.taskName + "\n" + localValueJSON.taskType + "\n" + localValueDate.toLocaleString() + "\n";
+
+                    // Создаем и заполняем содержимое подпункта
+
+                    let li = document.createElement("li");
+                    li.className = localValueJSON.taskName;
+
                     if (localValueDateNorm < currentDate)
-                        document.getElementById(localValueJSON.taskName).className += " red";
+                        li.id += "red";
                     if (diff < 0 && diff > -24000)
-                        document.getElementById(localValueJSON.taskName).className += " yellow";
+                        li.id += "yellow";
+
+                    //кнопка удаления
+
+                    let spanDel = document.createElement("span");
+                    spanDel.className = 'delone';
+
+                    //картинка корзины
+
+                    let img = document.createElement("img");
+                    img.src = "trash-alt-regular.svg";
+                    spanDel.appendChild(img);
+
+                    //имя задачи, тип, время
+
+                     let div = document.createElement('div');
+                     div.className = 'inProgress';
+                     let pName = document.createElement("p");
+                         pName.innerHTML = localValueJSON.taskName;
+
+                     div.appendChild(pName);
+
+                    let pType = document.createElement("p");
+                        pType.innerHTML = localValueJSON.taskType;
+                    div.appendChild(pType);
+
+                    let pDate = document.createElement("p");
+                        pDate.innerHTML = localValueJSON.taskDate;
+                    div.appendChild(pDate);
+
+                    // Кнопка редактирования
+
+                    let spanRef = document.createElement("span");
+                    spanRef.className = 'refactor';
+                    spanRef.innerHTML = "Редактировать";
+
+                    // Собираем все элементы
+
+                    li.appendChild(spanDel);
+                    li.appendChild(div);
+                    li.appendChild(spanRef);
+
+                    //Добавляем в DOM
+
+                    document.querySelector("#list").appendChild(li);
+                    if(localValueJSON.taskType === "Тип Задачи: Личные задачи") {
+                        let personClonLi = li.cloneNode(true);
+                        document.querySelector("#personList").appendChild(personClonLi);
+                    }
+                    if(localValueJSON.taskType === "Тип Задачи: Рабочие задачи") {
+                        let workClonLi = li.cloneNode(true);
+                        document.querySelector("#workList").appendChild(workClonLi);
+                    }
                 }
             }
         },
@@ -209,7 +241,6 @@
 
 
         for (let i = 0; i < openRefactorButton.length; i++) {
-            console.log("hi");
             openRefactorButton[i].addEventListener("click", function () {
                 modal.classList.toggle("closed");
                 modalOverlay.classList.toggle("closed");
