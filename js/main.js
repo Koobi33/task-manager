@@ -15,11 +15,11 @@
             } else {
                 i = 1;
             }
-            if (document.getElementById('taskName').value !== "") {
+            if (document.querySelector('#taskName').value !== "") {
                 var newTask = {
-                    taskName: "" + document.getElementById('taskName').value,
+                    taskName: "" + document.querySelector('#taskName').value,
                     taskType: "Тип Задачи: " + document.getElementById('taskType').value,
-                    taskDate: "" + document.getElementById('taskDate').value,
+                    taskDate: "" + document.querySelector('#taskDate').value,
                     taskId: i,
                     taskIsComplete: false,
                 };
@@ -41,19 +41,20 @@
 // Изменить элемент
 
         set: function (elemID) {
-            if (document.getElementById('taskNameRef').value !== "") {
+            if (document.querySelector('#taskNameRef').value !== "") {
                 var refactored = {
-                    taskName: "" + document.getElementById('taskNameRef').value,
+                    taskName: "" + document.querySelector('#taskNameRef').value,
                     taskType: "Тип Задачи: " + document.getElementById('taskTypeRef').value,
-                    taskDate: "" + document.getElementById('taskDateRef').value,
+                    taskDate: "" + document.querySelector('#taskDateRef').value,
                     taskId: elemID.taskName,
                     taskIsComplete: false,
                 };
                 var strRefactored = JSON.stringify(refactored);
                 localStorage.removeItem("" + elemID.taskName);
                 localStorage.setItem("" + refactored.taskName, strRefactored);
+                location.reload();
             }
-            location.reload();
+
         },
 
 // Пометить выполненным
@@ -93,7 +94,7 @@
                         let li = document.createElement('li');
                         li.id = localValueJSON.taskName;
                         li.innerHTML = "<span class='delone'>X</span> <p class='inProgress'>" + newLi + "</p><span class='refactor'>Редактировать</span>";
-                        document.getElementById("personList").appendChild(li);
+                        document.querySelector("#personList").appendChild(li);
                         if (localValueJSON.taskIsComplete === true)
                             document.getElementById(localValueJSON.taskName).firstElementChild.nextElementSibling.className = "completed";
                         if (localValueDateNorm < currentDate)
@@ -178,12 +179,12 @@
                 "                        </div>\n" +
                 "                        </div>\n" +
                 "                        <button type=\"submit\" value=\"Создать\" formmethod=\"post\" class=\"btn btn-primary set\">Изменить</button></form>";
-            if(document.getElementById('refactorDiv'))
-                document.getElementById('refactorDiv').remove();
+            if(document.querySelector('#refactorDiv'))
+                document.querySelector('#refactorDiv').remove();
             this.parentElement.parentElement.appendChild(div);
 
                 //ждем клик на кнопке формы изменения
-                var setEl = document.getElementsByClassName("set");
+                var setEl = document.querySelectorAll(".set");
                 if(setEl) {
                     setEl[0].addEventListener('click', function () {
                        taskManager.set(elementStorage);
@@ -201,26 +202,27 @@
         taskManager.get();
 
         //ждем клик на добавление
-        var addEl = document.getElementsByClassName("add");
+        var addEl = document.querySelectorAll(".add");
         if (addEl)
             addEl[0].addEventListener('click', taskManager.add);
 
         //на очистку localStorage
-        var clearEl = document.getElementsByClassName("clear");
+        var clearEl = document.querySelectorAll(".clear");
         if(clearEl)
+            console.log(clearEl);
             clearEl[0].addEventListener('click', taskManager.clear);
         //на удаление элемента
-        var delEl = document.getElementsByClassName("delone");
+        var delEl = document.querySelectorAll(".delone");
         for (let i = 0; i < delEl.length; i++) {
             delEl[i].addEventListener('click', taskManager.del);
         }
         // на выполнение
-        var completeEl = document.getElementsByClassName("inProgress");
+        var completeEl = document.querySelectorAll(".inProgress");
         for (let i = 0; i < completeEl.length; i++) {
             completeEl[i].addEventListener('click', taskManager.complete);
         }
         // на вызов оккна изменений
-           var refactorLiEl = document.getElementsByClassName("refactor");
+           var refactorLiEl = document.querySelectorAll(".refactor");
         for (let i = 0; i < refactorLiEl.length; i++) {
             refactorLiEl[i].addEventListener('click', taskManager.refactorLi);
         }}
