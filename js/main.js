@@ -53,6 +53,7 @@
                 localStorage.removeItem("" + elemID.taskName);
                 localStorage.setItem("" + refactored.taskName, strRefactored);
             }
+            location.reload();
         },
 
 // Пометить выполненным
@@ -201,11 +202,14 @@
         taskManager.get();
 
         //ждем клик на добавление
-        var addEl = document.getElementById("add");
-        addEl.addEventListener('click', taskManager.add);
+        var addEl = document.getElementsByClassName("add");
+        if (addEl)
+            addEl[0].addEventListener('click', taskManager.add);
+
         //на очистку localStorage
-        var clearEl = document.getElementById("clear");
-        clearEl.addEventListener('click', taskManager.clear);
+        var clearEl = document.getElementsByClassName("clear");
+        if(clearEl)
+            clearEl[0].addEventListener('click', taskManager.clear);
         //на удаление элемента
         var delEl = document.getElementsByClassName("delone");
         for (let i = 0; i < delEl.length; i++) {
