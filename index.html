@@ -8,7 +8,6 @@
     <title>Task manager</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet">
     <script src="js/main.js"></script>
-    <!--<script src="js/eventListener.js"></script>-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
   <script src="jquery-3.4.0.slim.js"></script>
@@ -61,9 +60,6 @@
                         </div>
                         <button type="submit" value="Создать" formmethod="post" class="btn btn-primary add">Создать</button>
                     </form>
-
-
-
                 </div>
 
 <!--                Список всех задач-->
@@ -89,5 +85,37 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal-overlay closed" id="modal-overlay"></div>
+
+<div class="modal closed" id="modal">
+    <button class="close-button" id="close-button">Х</button>
+    <div class="modal-guts">
+        <h1 id="refactorh1">Редактирование элемента </h1>
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="taskName"></label><input class="form-control" type="text" id="taskNameRef" placeholder="Новая задача" name="taskName" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="taskType"></label>
+                        <select class="form-control" id="taskTypeRef" name="taskType">
+                        <option>Личные задачи</option>
+                        <option>Рабочие задачи</option>
+                    </select>
+                    </div>
+                    <div class="form-group sm col-3">
+                        <label for="taskDate"></label> <input value="2019-04-09T00:00" type="datetime-local" id="taskDateRef" name="taskDate" min="2019-04-01T00:00" max="2019-12-31T23:59">
+                    </div>
+                </div>
+                <button type="submit" value="Изменить" formmethod="post" class="btn btn-primary set">Изменить</button>
+            </form>
+    </div>
+</div>
+
+<!--<button id="open-button" class="open-button">Open Button</button>-->
+
+
 </body>
 </html>

@@ -93,7 +93,7 @@
                     if (localValueJSON.taskType === "Тип Задачи: Личные задачи") {
                         let li = document.createElement('li');
                         li.id = localValueJSON.taskName;
-                        li.innerHTML = "<span class='delone'>X</span> <p class='inProgress'>" + newLi + "</p><span class='refactor'>Редактировать</span>";
+                        li.innerHTML = "<span class='delone'><img src=\"trash-alt-regular.svg\"></span> <p class='inProgress'>" + newLi + "</p><span class='refactor'>Редактировать</span>";
                         document.querySelector("#personList").appendChild(li);
                         if (localValueJSON.taskIsComplete === true)
                             document.getElementById(localValueJSON.taskName).firstElementChild.nextElementSibling.className = "completed";
@@ -105,7 +105,7 @@
                     if (localValueJSON.taskType === "Тип Задачи: Рабочие задачи") {
                         let li = document.createElement('li');
                         li.id = localValueJSON.taskName;
-                        li.innerHTML = "<span class='delone'>X</span> <p class='inProgress' >" + newLi + "</p><span class='refactor'>Редактировать</span>";
+                        li.innerHTML = "<span class='delone'><img src=\"trash-alt-regular.svg\"></span> <p class='inProgress' >" + newLi + "</p><span class='refactor'>Редактировать</span>";
                         document.getElementById("workList").appendChild(li);
                         if (localValueJSON.taskIsComplete === true)
                             document.getElementById(localValueJSON.taskName).firstElementChild.nextElementSibling.className = "completed";
@@ -116,7 +116,7 @@
                     }
                     let li = document.createElement('li');
                     li.id = localValueJSON.taskName;
-                    li.innerHTML = "<span class='delone'>X</span> <p class='inProgress'>" + newLi + "</p><span class='refactor'>Редактировать</span>";
+                    li.innerHTML = "<span class='delone'><img src=\"trash-alt-regular.svg\"></span><p class='inProgress'>" + newLi + "</p><span class='refactor'>Редактировать</span>";
                     document.getElementById("list").appendChild(li);
                     if (localValueJSON.taskIsComplete === true)
                         document.getElementById(localValueJSON.taskName).firstElementChild.nextElementSibling.className = "completed";
@@ -142,48 +142,18 @@
         refactorLi: function () {
 
             var elementStorage = JSON.parse(localStorage.getItem("" + this.parentElement.id));
+            var refh1 = document.querySelector("#refactorh1").innerHTML += "" + elementStorage.taskName;
+            var refTaskName = document.querySelector("#taskNameRef").value = elementStorage.taskName;
+            var refTaskDate = document.querySelector("#taskDateRef").value = elementStorage.taskDate;
+            var refTaskType = document.querySelector('#taskTypeRef');
 
-
-            let div = document.createElement("div");
-            // div.className = "refactor";
-            // let h1 = document.createElement('h1');
-            // h1.innerText = "Редактирование элемента " + elementStorage.taskName;
-            // let form = document.createElement('form');
-            // div = document.getElementsByClassName('refactor');
-            // elem.parentElement.parentElement.appendChild(div).appendChild(h);
-
-            div.id = "refactorDiv";
-            div.innerHTML = "<h1>Редактирование элемента " + elementStorage.taskName + "</h1>" + "<form><div class=\"form-row\">\n" +
-                "                        <div class=\"form-group col-md-6\">\n" +
-                "\n" +
-                "                            <label for=\"taskName\"></label><input class=\"form-control\" type=\"text\" value=\"" + elementStorage.taskName + "\" id=\"taskNameRef\" placeholder=\"Новая задача\" name=\"taskName\" required>\n" +
-                "                        </div>\n" +
-                "                        <div class=\"form-group col-md-6\">\n";
-
-
-            if (elementStorage.taskType === "Тип Задачи: Личные задачи") {
-                div.innerHTML += "<label for=\"taskType\"></label><select class=\"form-control\" id=\"taskTypeRef\" name=\"taskType\">" +
-                    "                        <option selected='selected'>Личные задачи</option>\n" +
-                    "                        <option>Рабочие задачи</option>\n" +
-                    "                        </select>\n" +
-                    "                        </div>\n";
-            } else if (elementStorage.taskType === "Тип Задачи: Рабочие задачи") {
-                div.innerHTML += "<label for=\"taskType\"></label><select class=\"form-control\" id=\"taskTypeRef\" name=\"taskType\">" +
-                    "                        <option>Личные задачи</option>\n" +
-                    "                        <option selected='selected'>Рабочие задачи</option>\n" +
-                    "                        </select>\n" +
-                    "                        </div>\n";
+            if(elementStorage.taskType === "Тип Задачи: Личные задачи") {
+                refTaskType.querySelectorAll('option')[0].selected = true;
             }
-            div.innerHTML += "                        <div class=\"form-group sm col-3\">\n" +
-                "                        <label for=\"taskDate\"></label> <input type=\"datetime-local\" value=\"" + elementStorage.taskDate + "\" id=\"taskDateRef\" name=\"taskDate\" min=\"2019-04-01T00:00\" max=\"2019-12-31T23:59\">\n" +
-                "                        </div>\n" +
-                "                        </div>\n" +
-                "                        <button type=\"submit\" value=\"Создать\" formmethod=\"post\" class=\"btn btn-primary set\">Изменить</button></form>";
-            if(document.querySelector('#refactorDiv'))
-                document.querySelector('#refactorDiv').remove();
-            this.parentElement.parentElement.appendChild(div);
+            else
+                refTaskType.querySelectorAll('option')[1].selected = true;
 
-                //ждем клик на кнопке формы изменения
+            //    ждем клик на кнопке формы изменения
                 var setEl = document.querySelectorAll(".set");
                 if(setEl) {
                     setEl[0].addEventListener('click', function () {
@@ -208,8 +178,7 @@
 
         //на очистку localStorage
         var clearEl = document.querySelectorAll(".clear");
-        if(clearEl)
-            console.log(clearEl);
+        if (clearEl)
             clearEl[0].addEventListener('click', taskManager.clear);
         //на удаление элемента
         var delEl = document.querySelectorAll(".delone");
@@ -221,12 +190,36 @@
         for (let i = 0; i < completeEl.length; i++) {
             completeEl[i].addEventListener('click', taskManager.complete);
         }
-        // на вызов оккна изменений
-           var refactorLiEl = document.querySelectorAll(".refactor");
-        for (let i = 0; i < refactorLiEl.length; i++) {
-            refactorLiEl[i].addEventListener('click', taskManager.refactorLi);
-        }}
+        // // на вызов оккна изменений
+        //    var refactorLiEl = document.querySelectorAll(".refactor");
+        // for (let i = 0; i < refactorLiEl.length; i++) {
+        //     refactorLiEl[i].addEventListener('click', taskManager.refactorLi);
+        // }
 
+        var modal = document.querySelector("#modal");
+        var modalOverlay = document.querySelector("#modal-overlay");
+        var closeButton = document.querySelector("#close-button");
+        var openRefactorButton = document.querySelectorAll(".refactor");
+        //  var openButton = document.querySelectorAll(".refactor");
+
+        closeButton.addEventListener("click", function () {
+            modal.classList.toggle("closed");
+            modalOverlay.classList.toggle("closed");
+        });
+
+
+        for (let i = 0; i < openRefactorButton.length; i++) {
+            console.log("hi");
+            openRefactorButton[i].addEventListener("click", function () {
+                modal.classList.toggle("closed");
+                modalOverlay.classList.toggle("closed");
+               taskManager.refactorLi.apply(this);
+           });
+       }
+
+
+
+    }
     // Ждем пока страница загрузится (???)
     document.addEventListener("DOMContentLoaded", ready);
 })();
