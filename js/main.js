@@ -177,16 +177,15 @@
                 "                        <label for=\"taskDate\"></label> <input type=\"datetime-local\" value=\"" + elementStorage.taskDate + "\" id=\"taskDateRef\" name=\"taskDate\" min=\"2019-04-01T00:00\" max=\"2019-12-31T23:59\">\n" +
                 "                        </div>\n" +
                 "                        </div>\n" +
-                "                        <button id='set' type=\"submit\" value=\"Создать\" formmethod=\"post\" class=\"btn btn-primary\">Изменить</button></form>";
+                "                        <button type=\"submit\" value=\"Создать\" formmethod=\"post\" class=\"btn btn-primary set\">Изменить</button></form>";
             if(document.getElementById('refactorDiv'))
                 document.getElementById('refactorDiv').remove();
             this.parentElement.parentElement.appendChild(div);
 
                 //ждем клик на кнопке формы изменения
-                var setEl = document.getElementById("set");
+                var setEl = document.getElementsByClassName("set");
                 if(setEl) {
-                    console.log(setEl);
-                    setEl.addEventListener('click', function () {
+                    setEl[0].addEventListener('click', function () {
                        taskManager.set(elementStorage);
                     });
                 }
