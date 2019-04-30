@@ -1,4 +1,4 @@
-var localStorageManager = (function () {
+var mongoManager = (function () {
     return {
         addElem: function (key, value) {
            localStorage.setItem(key, value);
@@ -11,8 +11,8 @@ var localStorageManager = (function () {
         },
 
         refactorElem: function (oldKey, newKey, newValue) {
-            localStorageManager.delElem(oldKey);
-            localStorageManager.addElem(newKey, newValue);
+            mongoManager.delElem(oldKey);
+            mongoManager.addElem(newKey, newValue);
         },
 
         completeElem: {
@@ -43,7 +43,7 @@ var localStorageManager = (function () {
             var allElems = [];
             for (let i = 0; i < localStorage.length; i++) {
                 let key = localStorage.key(i);
-                let tmp = localStorageManager.getOneElem(key);
+                let tmp = mongoManager.getOneElem(key);
                 allElems.push(tmp);
             }
             return allElems;

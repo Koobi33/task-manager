@@ -16,7 +16,7 @@ var taskManager = (function () {
                     // taskId: i,
                     taskIsComplete: false,
                 };
-                localStorageManager.addElem(newTask.taskName, JSON.stringify(newTask));
+                mongoManager.addElem(newTask.taskName, newTask);
                 taskManager.create(newTask);
                taskManager.clearForm();
             }
@@ -27,22 +27,22 @@ var taskManager = (function () {
         del: function () {
             if (confirm("Вы действительно хотите удалить задачу " + this + "?")) {
                 document.getElementById(this).remove();
-                localStorageManager.delElem(this)
+                mongoManager.delElem(this)
             }
         },
         // Пометить выполненным
         complete: function () {
 
            let li = document.getElementById(this);
-           let liSrorage = localStorageManager.getOneElem(this);
+           let liSrorage = mongoManager.getOneElem(this);
            if(liSrorage.taskIsComplete === false) {
-               localStorageManager.completeElem.complete(this);
+               mongoManager.completeElem.complete(this);
                li.classList.remove(li.classList[4]);
                li.classList.add('green');
            } else {
-               localStorageManager.completeElem.inProgress(this);
+               mongoManager.completeElem.inProgress(this);
                li.remove();
-               liSrorage = localStorageManager.getOneElem(this);
+               liSrorage = mongoManager.getOneElem(this);
                taskManager.create(liSrorage);
            }
 
@@ -145,7 +145,7 @@ var taskManager = (function () {
                     taskIsComplete: false,
                 };
 
-                localStorageManager.refactorElem(this, newTask.taskName, JSON.stringify(newTask));
+                mongoManager.refactorElem(this, newTask.taskName, JSON.stringify(newTask));
                 taskManager.clearForm();
                 taskManager.createAddButton();
                 taskManager.clearList();
@@ -182,7 +182,7 @@ var taskManager = (function () {
         // Заполнение формы данными изменяегомого элемента
         refactor: function() {
             var key = this;
-            var oldTask = localStorageManager.getOneElem(key);
+            var oldTask = mongoManager.getOneElem(key);
             document.querySelector("#taskName").value = oldTask.taskName;
             document.querySelector("#taskDate").value = oldTask.taskDate;
 
@@ -200,7 +200,7 @@ var taskManager = (function () {
 
         // Построение полного списка
         createList: function() {
-                let list = localStorageManager.getAllElems();
+                let list = mongoManager.getAllElems();
                 list.sort(function (a,b) {
                    return new Date(a.taskDate) -  new Date(b.taskDate);
                 });
@@ -210,7 +210,7 @@ var taskManager = (function () {
 
         //Создание списка отсортированного по типу задачи
         createCustomList: function(listname) {
-            let customList = localStorageManager.getAllElems();
+            let customList = mongoManager.getAllElems();
             customList.sort(function (a,b) {
                 return new Date(a.taskDate) -  new Date(b.taskDate);
             });
