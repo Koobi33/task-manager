@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task manager</title>
+    <link rel="stylesheet" type="text/css" href="../semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="style/css.css">
+    <script src="../jquery-3.2.1.min.js"></script>
+    <!--    <script src=""></script>-->
+    <script src="../semantic/dist/semantic.min.js"></script>
+    <script src="js/localstorage.js"></script>
+    <!--    <script src="js/index.js"></script>-->
+    <script src="js/listeners.js"></script>
+    <script src="js/taskManager.js"></script>
+</head>
+
+<body>
+
+<div class="ui segment">
+    <h1 class="ui center aligned header">
+        Task manager
+    </h1>
+</div>
+<div class="ui grid">
+
+<!--    Меню-->
+
+    <div class="four wide column ui vertical menu left fixed">
+        <div class="item">
+            <div class="ui icon input">
+                <input type="text" placeholder="Поиск по задачам">
+                <i class="inverted circular search link icon"></i>
+            </div>
+        </div>
+            <div class="menu ui attached vertical buttons" id="typePanelEl">
+                <button class="ui attached active button all">Все задачи</button>
+                <button class="ui attached button person">Личные задачи</button>
+                <button class="ui attached button work">Рабочие задачи</button>
+                <button class="ui attached button formToggle">
+                    <i class="plus icon"></i> Создать задачу
+                </button>
+            </div>
+    </div>
+
+    <div class="twelve wide column">
+
+<!--        Всплывающее окно с формой для добавления задачи-->
+
+        <div class="ui inverted segment grey transition hidden" id="createForm">
+            <div class="ui inverted form">
+                <form>
+                <div class="field">
+                    <div class="field">
+                        <label>Название задачи</label>
+                        <input type="text" id="taskName" required autofocus>
+                    </div>
+                    <div class="field">
+                     <label>Дедлайн</label>
+                        <div class="ui calendar" id="standard_calendar">
+                            <div class="ui input left icon"><div class="ui popup calendar top left transition hidden" style="top: auto; left: 0px; bottom: 38px; right: auto;"><table class="ui celled center aligned unstackable table minute"><thead><tr><th colspan="3"><span class="link">April 27, 2019</span><span class="prev link"><i class="chevron left icon"></i></span><span class="next link"><i class="chevron right icon"></i></span></th></tr></thead><tbody><tr><td class="link active">6:00 PM</td><td class="link">6:05 PM</td><td class="link">6:10 PM</td></tr><tr><td class="link">6:15 PM</td><td class="link">6:20 PM</td><td class="link">6:25 PM</td></tr><tr><td class="link">6:30 PM</td><td class="link">6:35 PM</td><td class="link">6:40 PM</td></tr><tr><td class="link">6:45 PM</td><td class="link focus">6:50 PM</td><td class="link">6:55 PM</td></tr></tbody></table></div>
+                                <i class="calendar icon"></i>
+                                <input type="text" placeholder="Date/Time" class="" id="taskDate" autocomplete="off">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="field">
+                    <select id="taskType">
+                        <option>Тип задачи</option>
+                        <option>Личная задача</option>
+                        <option>Рабочая задача</option>
+                    </select>
+                </div>
+                    <div class="ui submit button add" id="addSetBut">Создать</div>
+                </form>
+            </div>
+        </div>
+<!--        Список-->
+            <ul id="list">
+
+            </ul>
+    </div>
+</div>
+</body>
+</html>
